@@ -1,4 +1,4 @@
-# fenrir (pronounced “fin-rear”)
+# fenrir (pronounced “fen-rear”)
 
 [![Build Status](https://travis-ci.com/Comcast/codex-fenrir.svg?branch=master)](https://travis-ci.com/Comcast/codex-fenrir)
 [![codecov.io](http://codecov.io/github/Comcast/codex-fenrir/coverage.svg?branch=master)](http://codecov.io/github/Comcast/codex-fenrir?branch=master)
@@ -9,4 +9,4 @@
 [![GitHub release](https://img.shields.io/github/release/Comcast/codex-fenrir.svg)](CHANGELOG.md)
 
 
-The service that prunes old, expired or badly behaving entries from the database.
+The service that prunes expired entries from the database.
