@@ -1,0 +1,18 @@
+# -*- mode: conf -*-
+
+[Unit]
+Description=The pruner of expired entries from the database.
+Documentation=https://github.com/Comcast/codex-fenrir
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/fenrir
+User=fenrir
+ExecStart=/usr/bin/fenrir \
+          $FENRIR_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
