@@ -7,6 +7,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 COPY . .
+RUN GO111MODULE=on go mod vendor
 RUN GO111MODULE=on go build -o fenrir_linux_amd64
 
 FROM alpine
