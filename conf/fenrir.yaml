@@ -1,0 +1,17 @@
+---
+log:
+  file: "stdout"
+  level: "DEBUG"
+  json: false
+
+pruneInterval: 0s
+pruneRetries: 3
+retryInterval: 10s
+db:
+  server: "db:26257"
+  username: "roachadmin"
+  database: "devices"
+  numRetries: 4
+  waitTimeMult: 5
+  connectTimeout: 1m
+  opTimeout: 3s
