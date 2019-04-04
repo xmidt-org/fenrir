@@ -19,11 +19,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/Comcast/webpa-common/concurrent"
 	_ "net/http/pprof"
 
 	"github.com/Comcast/codex/db"
 	"github.com/Comcast/webpa-common/logging"
-	"github.com/Comcast/webpa-common/secure"
 	"github.com/goph/emperror"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -54,7 +54,7 @@ func fenrir(arguments []string) int {
 
 	var (
 		f, v                            = pflag.NewFlagSet(applicationName, pflag.ContinueOnError), viper.New()
-		logger, metricsRegistry, _, err = server.Initialize(applicationName, arguments, f, v, secure.Metrics, db.Metrics)
+		logger, metricsRegistry, codex, err = server.Initialize(applicationName, arguments, f, v, db.Metrics)
 	)
 
 	printVer := f.BoolP("version", "v", false, "displays the version number")
@@ -103,6 +103,14 @@ func fenrir(arguments []string) int {
 		pruner.wg.Add(1)
 		go pruner.handlePruning(stopPruning, config.PruneInterval)
 	}
+	// MARK: Starting the server
+	_, runnable, done := codex.Prepare(logger, nil, metricsRegistry, nil)
+
+	waitGroup, shutdown, err := concurrent.Execute(runnable)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to start device manager: %s\n", err)
+		return 1
+	}
 
 	logging.Info(logger).Log(logging.MessageKey(), fmt.Sprintf("%s is up and running!", applicationName), "elapsedTime", time.Since(start))
 	signals := make(chan os.Signal, 10)
@@ -116,11 +124,15 @@ func fenrir(arguments []string) int {
 				logging.Error(logger).Log(logging.MessageKey(), "exiting due to signal", "signal", s)
 				exit = true
 			}
+			case <-done:
+				exit = true
 		}
 	}
 
 	stopPruning <- struct{}{}
+	close(shutdown)
 	pruner.wg.Wait()
+	waitGroup.Wait()
 	err = dbConn.Close()
 	if err != nil {
 		logging.Error(logger, emperror.Context(err)...).Log(logging.MessageKey(), "closing database threads failed",
