@@ -48,9 +48,10 @@ function deploy {
     printf "\n"
 }
 
-svalinn-docker
+fenrir-docker
 cd ..
 
+svalinn-docker
 gungnir-docker
 echo "Gungnir V:$GUNGNIR_VERSION Svalinn V:$SVALINN_VERSION Fenrir V:$FENRIR_VERSION"
 deploy
