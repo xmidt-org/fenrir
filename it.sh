@@ -9,10 +9,21 @@ function check() {
   fi
 }
 
+function fenrir-docker {
+    FENRIR_VERSION="$(make version -s)"
+    make docker
+    check $?
+}
+
 function svalinn-docker {
+    echo "Building Svalinn Image"
+    git clone https://github.com/Comcast/codex-svalinn.git 2> /dev/null || true
+    cd codex-svalinn
     SVALINN_VERSION="$(make version -s)"
     make docker
     check $?
+    cd ..
+    printf "\n"
 }
 
 function gungnir-docker {
@@ -31,17 +42,18 @@ function deploy {
     docker swarm init
     git clone https://github.com/Comcast/codex.git 2> /dev/null || true
     pushd codex/deploy/docker-compose
-    SVALINN_VERSION=$SVALINN_VERSION GUNGNIR_VERSION=$GUNGNIR_VERSION docker stack deploy codex --compose-file docker-compose.yml
+    SVALINN_VERSION=$SVALINN_VERSION GUNGNIR_VERSION=$GUNGNIR_VERSION FENRIR_VERSION=$FENRIR_VERSION docker stack deploy codex --compose-file docker-compose.yml
     check $?
     popd
     printf "\n"
 }
 
-svalinn-docker
+fenrir-docker
 cd ..
 
+svalinn-docker
 gungnir-docker
-echo "Gungnir V:$GUNGNIR_VERSION Svalinn V:$SVALINN_VERSION"
+echo "Gungnir V:$GUNGNIR_VERSION Svalinn V:$SVALINN_VERSION Fenrir V:$FENRIR_VERSION"
 deploy
 go get -d github.com/Comcast/codex/tests/...
 printf "Starting Tests \n\n\n"

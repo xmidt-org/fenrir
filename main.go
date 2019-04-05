@@ -19,8 +19,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/Comcast/webpa-common/concurrent"
 	_ "net/http/pprof"
+
+	"github.com/Comcast/webpa-common/concurrent"
 
 	"github.com/Comcast/codex/db"
 	"github.com/Comcast/webpa-common/logging"
@@ -53,7 +54,7 @@ func fenrir(arguments []string) int {
 	start := time.Now()
 
 	var (
-		f, v                            = pflag.NewFlagSet(applicationName, pflag.ContinueOnError), viper.New()
+		f, v                                = pflag.NewFlagSet(applicationName, pflag.ContinueOnError), viper.New()
 		logger, metricsRegistry, codex, err = server.Initialize(applicationName, arguments, f, v, db.Metrics)
 	)
 
@@ -124,8 +125,8 @@ func fenrir(arguments []string) int {
 				logging.Error(logger).Log(logging.MessageKey(), "exiting due to signal", "signal", s)
 				exit = true
 			}
-			case <-done:
-				exit = true
+		case <-done:
+			exit = true
 		}
 	}
 
