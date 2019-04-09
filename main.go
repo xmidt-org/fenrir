@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Comcast/webpa-common/semaphore"
 	_ "net/http/pprof"
 
 	"github.com/Comcast/webpa-common/concurrent"
@@ -44,10 +45,11 @@ const (
 )
 
 type FenrirConfig struct {
-	PruneInterval time.Duration
-	PruneRetries  int
-	RetryInterval time.Duration
-	Db            db.Config
+	PruneInterval   time.Duration
+	PruneRetries    int
+	RetryInterval   time.Duration
+	MaxPruneWorkers int
+	Db              db.Config
 }
 
 func fenrir(arguments []string) int {
@@ -94,9 +96,20 @@ func fenrir(arguments []string) int {
 
 	updater := db.CreateRetryUpdateService(dbConn, config.PruneRetries, config.RetryInterval, metricsRegistry)
 
+	if config.MaxPruneWorkers <= 0 {
+		if config.Db.MaxOpenConns > 0 {
+			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to max open connections", )
+			config.MaxPruneWorkers = config.Db.MaxOpenConns
+		} else {
+			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to 5", )
+			config.MaxPruneWorkers = 5
+		}
+	}
+
 	pruner := pruner{
-		updater: updater,
-		logger:  logger,
+		updater:      updater,
+		logger:       logger,
+		pruneWorkers: semaphore.New(config.MaxPruneWorkers),
 	}
 
 	stopPruning := make(chan struct{}, 1)
