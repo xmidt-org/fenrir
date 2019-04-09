@@ -98,10 +98,10 @@ func fenrir(arguments []string) int {
 
 	if config.MaxPruneWorkers <= 0 {
 		if config.Db.MaxOpenConns > 0 {
-			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to max open connections", )
+			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to max open connections")
 			config.MaxPruneWorkers = config.Db.MaxOpenConns
 		} else {
-			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to 5", )
+			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to 5")
 			config.MaxPruneWorkers = 5
 		}
 	}

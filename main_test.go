@@ -16,3 +16,13 @@
  */
 
 package main
+
+import "testing"
+
+func TestFenrir(t *testing.T) {
+	code := fenrir([]string{"-v"})
+	t.Logf("Recieved Code %d", code)
+	if code != 0 {
+		t.Error("-v should result in a 0 error code")
+	}
+}
