@@ -3,17 +3,12 @@ module github.com/Comcast/codex-fenrir
 go 1.12
 
 require (
-	github.com/Comcast/codex v0.2.10-0.20190408220448-6a5e7b3737cc
-	github.com/Comcast/webpa-common v0.0.0-20190312224005-400bb4f8fc50
+	github.com/Comcast/codex v0.3.0
+	github.com/Comcast/webpa-common v0.9.0-alpha.0.20190402211944-723a128f40c7
 	github.com/c9s/goprocinfo v0.0.0-20190309065803-0b2ad9ac246b // indirect
-	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/go-kit/kit v0.8.0
-	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/goph/emperror v0.16.0
-	github.com/jinzhu/now v1.0.0 // indirect
 	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da // indirect
-	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.2
 )
