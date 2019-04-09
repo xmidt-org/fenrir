@@ -84,7 +84,7 @@ func fenrir(arguments []string) int {
 	config := new(FenrirConfig)
 	v.Unmarshal(config)
 
-	dbConn, err := db.CreateDbConnection(config.Db, metricsRegistry)
+	dbConn, err := db.CreateDbConnection(config.Db, metricsRegistry, nil)
 	if err != nil {
 		logging.Error(logger, emperror.Context(err)...).Log(logging.MessageKey(), "Failed to initialize database connection",
 			logging.ErrorKey(), err.Error())
