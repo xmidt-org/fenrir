@@ -18,6 +18,7 @@
 package main
 
 import (
+	"github.com/Comcast/webpa-common/semaphore"
 	"sync"
 	"time"
 
@@ -28,9 +29,10 @@ import (
 )
 
 type pruner struct {
-	updater db.RetryUpdateService
-	logger  log.Logger
-	wg      sync.WaitGroup
+	updater      db.RetryUpdateService
+	logger       log.Logger
+	wg           sync.WaitGroup
+	pruneWorkers semaphore.Interface
 }
 
 func (r *pruner) handlePruning(quit chan struct{}, interval time.Duration) {
@@ -42,12 +44,14 @@ func (r *pruner) handlePruning(quit chan struct{}, interval time.Duration) {
 		case <-quit:
 			return
 		case <-t.C:
-			r.pruneDevice()
+			r.pruneWorkers.Acquire()
+			go r.pruneDevice()
 		}
 	}
 }
 
 func (r *pruner) pruneDevice() {
+	defer r.pruneWorkers.Release()
 	err := r.updater.PruneRecords(time.Now().Unix())
 	if err != nil {
 		logging.Error(r.logger, emperror.Context(err)...).Log(logging.MessageKey(),
