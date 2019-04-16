@@ -1,4 +1,1 @@
-- Added Prune limit
-- Leverage mutliple connections
-- bumped codex to v0.3.2
-- bumped webpa-common to v1.0.0
+
