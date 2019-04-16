@@ -1,1 +1,2 @@
-
+- Added Prune limit
+- Leverage mutliple connections
