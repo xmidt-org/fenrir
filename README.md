@@ -8,7 +8,6 @@
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/Comcast/codex-fenrir/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/Comcast/codex-fenrir.svg)](CHANGELOG.md)
 
-
 The service that prunes expired entries from the database.
 
 ## Summary
