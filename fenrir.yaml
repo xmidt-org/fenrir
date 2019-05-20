@@ -1,18 +1,161 @@
 ---
-log:
-  file: "stdout"
-  level: "DEBUG"
-  json: false
 
-pruneInterval: 0s
-pruneRetries: 3
-retryInterval: 10s
+
+########################################
+#   Debugging/Pprof Configuration
+########################################
+
+# pprof defines the details needed for the pprof debug endpoint.
+# (Optional)
+pprof:
+  # address provides the port number for the endpoint to bind to.
+  address: ":7202"
+
+########################################
+#   Metrics Configuration
+########################################
+
+# metric defines the details needed for the prometheus metrics endpoint
+# (Optional)
+metric:
+  # address provides the port number for the endpoint to bind to.  Port 9389
+  # was chosen because it does not conflict with any of the other prometheus
+  # metrics or other machines in the xmidt cluster.  You may use any port you
+  # wish.
+  address: ":7203"
+
+  # metricsOptions provides the details needed to configure the prometheus
+  # metric data.  Metrics generally have the form:
+  #
+  # {namespace}_{subsystem}_{metric}
+  #
+  # so if you use the suggested value below, your metrics are prefixed like
+  # this:
+  #
+  # codex_fenrir_{metric}
+  #
+  # (Optional)
+  metricsOptions:
+    # namespace is the namespace of the metrics provided
+    # (Optional)
+    namespace: "codex"
+    # subsystem is the subsystem of the metrics provided
+    # (Optional)
+    subsystem: "fenrir"
+
+########################################
+#   Logging Related Configuration
+########################################
+
+# log configures the logging subsystem details
+log:
+  # file is the name of the most recent log file.  If set to "stdout" this
+  # will log to os.Stdout.
+  # (Optional) defaults to os.TempDir()
+  #file: "/var/log/fenrir/fenrir.log"
+  file: "stdout"
+
+  # level is the logging level to use - INFO, DEBUG, WARN, ERROR
+  # (Optional) defaults to ERROR
+  level: "ERROR"
+
+  # maxsize is the maximum file size in MB
+  # (Optional) defaults to max 100MB
+  maxsize: 50
+
+  # maxage is the maximum number of days to retain old log files
+  # (Optional) defaults to ignore age limit (0)
+  maxage: 30
+
+  # maxbackups is the maximum number of old log files to retain
+  # (Optional) defaults to retain all (0)
+  maxbackups: 10
+
+  # json is a flag indicating whether JSON logging output should be used.
+  # (Optional) defaults to false
+  json: true
+
+
+########################################
+#   Database Related Configuration
+########################################
+
+# db provides the configuration for connecting to the database and database 
+# calls.
 db:
+  # server is the address and port used to connect to the server.
   server: "db:26257"
+
+  # username is the username to use when connecting to the database.
   username: "roachadmin"
+
+  # database is the name of the database being connected to.
   database: "devices"
+
+  # SSLRootCert is the root cert to use when connecting to the database.
+  # The SSLKey and SSLCert must also be provided in order to connect securely.
+  # (Optional)
+  #sslRootCert: "/etc/fenrir/ca.crt"
+
+  # SSLKey is the SSL key to use when connecting to the database.  The 
+  # SSLRootCert and SSLCert must also be provided in order to connect securely.
+  # (Optional)
+  #sslKey: "/etc/fenrir/client.fenrir.key"
+
+  # SSLCert is the SSL cert to use when connecting to the database.  The SSLKey 
+  # and SSLRootCert must also be provided in order to connect securely.
+  # (Optional)
+  #sslCert: "/etc/fenrir/client.fenrir.crt"
+
+  # numRetries is the number of times to retry connecting to the database.  If 
+  # numRetries is below 1, there will be no attempts to retry.
+  # (Optional)
   numRetries: 4
-  pruneLimit: 1000
+
+  # waitTimeMult is the number to multiply by 1 second in between each attempt 
+  # to connect to the database. If there is only the initial attempt, this 
+  # value is not used.  If the multiple is set below 1, it defaults to 1.
+  # (Optional) defaults to 1
   waitTimeMult: 5
+
+  # connectTimeout is the timeout for connecting to the database.  If 
+  # establishing a connection takes longer than this, it will fail.  If 
+  # the connectTimeout is set to 0, it defaults to 10s.
+  # (Optional) defaults to 10s
   connectTimeout: 1m
-  opTimeout: 3s
+
+  # opTimeout is the timeout for database calls after fenrir is connected.
+  # If the opTimeout is set to 0, it defaults to 10s.
+  # (Optional) defaults to 10s
+  opTimeout: 100ms
+
+  # pruneLimit is the maximum number of records that can be deleted in one 
+  # database request.  If the pruneLimit is set to 0 or below no limit is 
+  # enforced.
+  # (Optional)
+  pruneLimit: 1000
+
+  # maxIdleConns are the maximum number of idle connections allowed at one time.
+  # If a value below 2 is chosen, it defaults to 2.
+  # (Optional) defaults to 2
+  #maxIdleConns: 2
+
+  # maxOpenConns are the maximum number of open connections allowed at one time.
+  # If the value is 0, there is an unlimited number of connections.
+  # (Optional)I
+  #maxOpenConns: 0
+
+# pruneInterval provides the amount of time to wait between each delete call to 
+# the database.  If this value is 0s, no pruning is done.
+# (Optional)
+pruneInterval: 0s
+
+# pruneRetries provides the number of times to retry if a database request 
+# fails.  If pruneRetries is set to a value below 0, it is set to 1.
+# (Optional)
+pruneRetries: 3
+
+# retryInterval provides the amount of time to wait in between attempts to 
+# query the database.  Has no effect if the number of retries is 0.
+# (Optional)
+retryInterval: 10s
