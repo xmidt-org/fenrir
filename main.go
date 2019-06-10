@@ -19,8 +19,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/Comcast/webpa-common/semaphore"
 	_ "net/http/pprof"
+
+	"github.com/Comcast/codex/db/batchDeleter"
 
 	"github.com/Comcast/webpa-common/concurrent"
 
@@ -45,11 +46,16 @@ const (
 )
 
 type FenrirConfig struct {
-	PruneInterval   time.Duration
-	PruneRetries    int
-	RetryInterval   time.Duration
-	MaxPruneWorkers int
-	Db              db.Config
+	PruneRetries RetryConfig
+	Pruner       batchDeleter.Config
+	Shards       []int
+	Db           db.Config
+}
+
+type RetryConfig struct {
+	NumRetries   int
+	Interval     time.Duration
+	IntervalMult time.Duration
 }
 
 func fenrir(arguments []string) int {
@@ -77,14 +83,13 @@ func fenrir(arguments []string) int {
 	}
 	logging.Info(logger).Log(logging.MessageKey(), "Successfully loaded config file", "configurationFile", v.ConfigFileUsed())
 
-	/*validator, err := server.GetValidator(v, DEFAULT_KEY_ID)
-	 if err != nil {
-		 fmt.Fprintf(os.Stderr, "Validator error: %v\n", err)
-		 return 1
-	 }*/
-
 	config := new(FenrirConfig)
 	v.Unmarshal(config)
+
+	if len(config.Shards) == 0 {
+		logging.Warn(logger).Log(logging.MessageKey(), "no shards given, defaulting to single 0 shard")
+		config.Shards = []int{0}
+	}
 
 	dbConn, err := db.CreateDbConnection(config.Db, metricsRegistry, nil)
 	if err != nil {
@@ -94,29 +99,29 @@ func fenrir(arguments []string) int {
 		return 2
 	}
 
-	updater := db.CreateRetryUpdateService(dbConn, config.PruneRetries, config.RetryInterval, metricsRegistry)
+	updater := db.CreateRetryUpdateService(
+		dbConn,
+		db.WithRetries(config.PruneRetries.NumRetries),
+		db.WithInterval(config.PruneRetries.Interval),
+		db.WithIntervalMultiplier(config.PruneRetries.IntervalMult),
+		db.WithMeasures(metricsRegistry),
+	)
 
-	if config.MaxPruneWorkers <= 0 {
-		if config.Db.MaxOpenConns > 0 {
-			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to max open connections")
-			config.MaxPruneWorkers = config.Db.MaxOpenConns
-		} else {
-			logging.Warn(logger).Log(logging.MessageKey(), "invalid prune worker pool value defaulting to 5")
-			config.MaxPruneWorkers = 5
+	stopFuncs := make([]func(), len(config.Shards))
+
+	for _, shard := range config.Shards {
+		config.Pruner.Shard = shard
+		deleter, err := batchDeleter.NewBatchDeleter(config.Pruner, logger, metricsRegistry, updater)
+		if err != nil {
+			logging.Error(logger, emperror.Context(err)...).Log(logging.MessageKey(), "Failed to initialize batch deleter",
+				logging.ErrorKey(), err.Error(), "shard", shard)
+			fmt.Fprintf(os.Stderr, "New Batch Deleter Failed: %#v\n", err)
+			return 2
 		}
+		deleter.Start()
+		stopFuncs = append(stopFuncs, deleter.Stop)
 	}
 
-	pruner := pruner{
-		updater:      updater,
-		logger:       logger,
-		pruneWorkers: semaphore.New(config.MaxPruneWorkers),
-	}
-
-	stopPruning := make(chan struct{}, 1)
-	if config.PruneInterval > 0 {
-		pruner.wg.Add(1)
-		go pruner.handlePruning(stopPruning, config.PruneInterval)
-	}
 	// MARK: Starting the server
 	_, runnable, done := codex.Prepare(logger, nil, metricsRegistry, nil)
 
@@ -143,10 +148,11 @@ func fenrir(arguments []string) int {
 		}
 	}
 
-	stopPruning <- struct{}{}
 	close(shutdown)
-	pruner.wg.Wait()
 	waitGroup.Wait()
+	for _, stop := range stopFuncs {
+		stop()
+	}
 	err = dbConn.Close()
 	if err != nil {
 		logging.Error(logger, emperror.Context(err)...).Log(logging.MessageKey(), "closing database threads failed",
