@@ -75,7 +75,6 @@ log:
   # (Optional) defaults to false
   json: true
 
-
 ########################################
 #   Database Related Configuration
 ########################################
@@ -145,17 +144,39 @@ db:
   # (Optional)I
   #maxOpenConns: 0
 
-# pruneInterval provides the amount of time to wait between each delete call to 
-# the database.  If this value is 0s, no pruning is done.
-# (Optional)
-pruneInterval: 0s
+# pruneRetries provides the information needed for making multiple attempts for 
+# the same database query.
+pruneRetries:
+  # numRetries provides the number of times to retry if a database request 
+  # fails.  If numRetries is set to a value below 0, it is set to 1.
+  # (Optional)
+  numRetries: 3
 
-# pruneRetries provides the number of times to retry if a database request 
-# fails.  If pruneRetries is set to a value below 0, it is set to 1.
-# (Optional)
-pruneRetries: 3
+  # interval provides the amount of time to wait in between attempts to query 
+  # the database.  Has no effect if the number of retries is 0.
+  # (Optional)
+  interval: 10s
 
-# retryInterval provides the amount of time to wait in between attempts to 
-# query the database.  Has no effect if the number of retries is 0.
-# (Optional)
-retryInterval: 10s
+  # intervalMult provides the number to multiple the interval by between each 
+  # attempt.  Has no effect if the number of retries is 0.  If it is set below 
+  # 1, it defaults to 1.
+  # (Optional) defaults to 1
+  intervalMult: 5
+
+########################################
+#   Database Related Configuration
+########################################
+
+# pruner
+pruner:
+  getWaitTime: 1s
+  getLimit: 1000
+  maxBatchSize: 10
+  queueSize: 10000
+  maxWorkers: 1000
+  # pruneInterval provides the amount of time to wait between each delete call to 
+  # the database.  If this value is 0s, no pruning is done.
+  # (Optional)
+  deleteWaitTime: 10ms
+
+shards: [0,1,2,3,4,5,6,7]
