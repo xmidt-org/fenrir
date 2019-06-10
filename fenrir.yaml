@@ -146,6 +146,7 @@ db:
 
 # pruneRetries provides the information needed for making multiple attempts for 
 # the same database query.
+# (Optional)
 pruneRetries:
   # numRetries provides the number of times to retry if a database request 
   # fails.  If numRetries is set to a value below 0, it is set to 1.
@@ -164,19 +165,46 @@ pruneRetries:
   intervalMult: 5
 
 ########################################
-#   Database Related Configuration
+#   Pruning Related Configuration
 ########################################
 
-# pruner
+# pruner provides the information needed for pruning: getting the ids of the 
+# records to delete and then deleting them in batches.
+# (Optional)
 pruner:
+  # getWaitTime provides how long to wait between each get call to the database.
+  # If the get query takes longer than the time given, the next get will be 
+  # done once the current one is finished. Minimum wait time is 1ms.
+  # (Optional) defaults to 1ms
   getWaitTime: 1s
+
+  # getLimit provides the maximum number of expired record ids to get from the 
+  # database at a time.  Defaults to 10 if a value below 0 is chosen.  No limit 
+  # is enforced if 0 is chosen.
+  # (Optional)
   getLimit: 1000
+
+  # maxBatchSize provides the maximum number of record ids to delete at a time.
+  # (Optional) defaults to 1
   maxBatchSize: 10
+
+  # queueSize provides the size of the channel that contains batches of record 
+  # ids to be deleted. If a value below 5 is chosen, defaults to 1000.
+  # (Optional) defaults to 1000
   queueSize: 10000
+
+  # maxWorkers provides the maximum number of workers that can be deleting 
+  # batches of record ids at a time.  If a value below 1 is chosen, it defaults 
+  # to 5.
+  # (Optional) defaults to 5
   maxWorkers: 1000
+
   # pruneInterval provides the amount of time to wait between each delete call to 
-  # the database.  If this value is 0s, no pruning is done.
+  # the database.
   # (Optional)
   deleteWaitTime: 10ms
 
+# shards provides the list of shards that fenrir should be deleting from.  Each 
+# shard gets its own batchDeleter.  If no shards are given, it defaults to [0].
+# (Optional) defaults to [0]
 shards: [0,1,2,3,4,5,6,7]
