@@ -42,7 +42,7 @@ import (
 const (
 	applicationName, apiBase = "fenrir", "/api/v1"
 	DEFAULT_KEY_ID           = "current"
-	applicationVersion       = "0.2.0"
+	applicationVersion       = "0.3.0"
 )
 
 type FenrirConfig struct {
