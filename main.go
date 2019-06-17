@@ -21,11 +21,14 @@ import (
 	"fmt"
 	_ "net/http/pprof"
 
+	"github.com/Comcast/codex/db/retry"
+
+	"github.com/Comcast/codex/db/postgresql"
+
 	"github.com/Comcast/codex/db/batchDeleter"
 
 	"github.com/Comcast/webpa-common/concurrent"
 
-	"github.com/Comcast/codex/db"
 	"github.com/Comcast/webpa-common/logging"
 	"github.com/goph/emperror"
 	"github.com/spf13/pflag"
@@ -49,7 +52,7 @@ type FenrirConfig struct {
 	PruneRetries RetryConfig
 	Pruner       batchDeleter.Config
 	Shards       []int
-	Db           db.Config
+	Db           postgresql.Config
 }
 
 type RetryConfig struct {
@@ -63,7 +66,7 @@ func fenrir(arguments []string) int {
 
 	var (
 		f, v                                = pflag.NewFlagSet(applicationName, pflag.ContinueOnError), viper.New()
-		logger, metricsRegistry, codex, err = server.Initialize(applicationName, arguments, f, v, db.Metrics)
+		logger, metricsRegistry, codex, err = server.Initialize(applicationName, arguments, f, v, postgresql.Metrics, dbretry.Metrics)
 	)
 
 	printVer := f.BoolP("version", "v", false, "displays the version number")
@@ -91,7 +94,7 @@ func fenrir(arguments []string) int {
 		config.Shards = []int{0}
 	}
 
-	dbConn, err := db.CreateDbConnection(config.Db, metricsRegistry, nil)
+	dbConn, err := postgresql.CreateDbConnection(config.Db, metricsRegistry, nil)
 	if err != nil {
 		logging.Error(logger, emperror.Context(err)...).Log(logging.MessageKey(), "Failed to initialize database connection",
 			logging.ErrorKey(), err.Error())
@@ -99,12 +102,12 @@ func fenrir(arguments []string) int {
 		return 2
 	}
 
-	updater := db.CreateRetryUpdateService(
+	updater := dbretry.CreateRetryUpdateService(
 		dbConn,
-		db.WithRetries(config.PruneRetries.NumRetries),
-		db.WithInterval(config.PruneRetries.Interval),
-		db.WithIntervalMultiplier(config.PruneRetries.IntervalMult),
-		db.WithMeasures(metricsRegistry),
+		dbretry.WithRetries(config.PruneRetries.NumRetries),
+		dbretry.WithInterval(config.PruneRetries.Interval),
+		dbretry.WithIntervalMultiplier(config.PruneRetries.IntervalMult),
+		dbretry.WithMeasures(metricsRegistry),
 	)
 
 	stopFuncs := make([]func(), len(config.Shards))
