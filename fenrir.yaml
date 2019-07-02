@@ -188,10 +188,10 @@ pruner:
   # (Optional) defaults to 1
   maxBatchSize: 10
 
-  # queueSize provides the size of the channel that contains batches of record 
+  # setSize provides the size of the set that contains batches of record 
   # ids to be deleted. If a value below 5 is chosen, defaults to 1000.
   # (Optional) defaults to 1000
-  queueSize: 10000
+  setSize: 10000
 
   # maxWorkers provides the maximum number of workers that can be deleting 
   # batches of record ids at a time.  If a value below 1 is chosen, it defaults 
