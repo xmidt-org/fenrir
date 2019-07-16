@@ -2,7 +2,7 @@
 
 [Unit]
 Description=The pruner of expired entries from the database.
-Documentation=https://github.com/Comcast/codex-fenrir
+Documentation=https://github.com/xmidt-org/fenrir
 After=network.target
 
 [Service]

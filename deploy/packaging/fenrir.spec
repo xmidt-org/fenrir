@@ -10,7 +10,7 @@ Vendor:     Comcast
 Packager:   Comcast
 Group:      System Environment/Daemons
 License:    ASL 2.0
-URL:        https://github.com/Comcast/codex-fenrir
+URL:        https://github.com/xmidt-org/fenrir
 Source0:    %{name}-%{_version}.tar.gz
 
 Prefix:     /opt
@@ -39,6 +39,7 @@ echo rm -rf %{buildroot}
 
 %files
 %defattr(644, root, root, 755)
+%doc $RPM_SOURCE_DIR/LICENSE $RPM_SOURCE_DIR/CHANGELOG.md $RPM_SOURCE_DIR/NOTICE
 
 %attr(755, root, root) %{_bindir}/%{name}
 

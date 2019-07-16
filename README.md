@@ -1,19 +1,19 @@
 # fenrir (pronounced “fen-rear”)
 
-[![Build Status](https://travis-ci.com/Comcast/codex-fenrir.svg?branch=master)](https://travis-ci.com/Comcast/codex-fenrir)
-[![codecov.io](http://codecov.io/github/Comcast/codex-fenrir/coverage.svg?branch=master)](http://codecov.io/github/Comcast/codex-fenrir?branch=master)
-[![Code Climate](https://codeclimate.com/github/Comcast/codex-fenrir/badges/gpa.svg)](https://codeclimate.com/github/Comcast/codex-fenrir)
-[![Issue Count](https://codeclimate.com/github/Comcast/codex-fenrir/badges/issue_count.svg)](https://codeclimate.com/github/Comcast/codex-fenrir)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Comcast/codex-fenrir)](https://goreportcard.com/report/github.com/Comcast/codex-fenrir)
-[![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/Comcast/codex-fenrir/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/Comcast/codex-fenrir.svg)](CHANGELOG.md)
+[![Build Status](https://travis-ci.com/xmidt-org/fenrir.svg?branch=master)](https://travis-ci.com/xmidt-org/fenrir)
+[![codecov.io](http://codecov.io/github/xmidt-org/fenrir/coverage.svg?branch=master)](http://codecov.io/github/xmidt-org/fenrir?branch=master)
+[![Code Climate](https://codeclimate.com/github/xmidt-org/fenrir/badges/gpa.svg)](https://codeclimate.com/github/xmidt-org/fenrir)
+[![Issue Count](https://codeclimate.com/github/xmidt-org/fenrir/badges/issue_count.svg)](https://codeclimate.com/github/xmidt-org/fenrir)
+[![Go Report Card](https://goreportcard.com/badge/github.com/xmidt-org/fenrir)](https://goreportcard.com/report/github.com/xmidt-org/fenrir)
+[![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/xmidt-org/fenrir/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/xmidt-org/fenrir.svg)](CHANGELOG.md)
 
 The service that prunes expired entries from the database.
 
 ## Summary
 
 Fenrir prunes expired events from the database. For more information on how 
-Fenrir fits into codex, check out [the codex README](https://github.com/Comcast/codex).
+Fenrir fits into codex, check out [the codex README](https://github.com/xmidt-org/codex-deploy).
 
 ## Details
 
@@ -31,16 +31,16 @@ version 1.11 or greater. Find more information on the [Go website](https://golan
 
 You can directly use `go get` to put the Fenrir binary into your `GOPATH`:
 ```bash
-GO111MODULE=on go get github.com/Comcast/codex-fenrir
+GO111MODULE=on go get github.com/xmidt-org/fenrir
 ```
 
 You can also clone the repository yourself and build using make:
 
 ```bash
-mkdir -p $GOPATH/src/github.com/Comcast
-cd $GOPATH/src/github.com/Comcast
-git clone git@github.com:Comcast/codex-fenrir.git
-cd codex-fenrir
+mkdir -p $GOPATH/src/github.com/xmidt-org
+cd $GOPATH/src/github.com/xmidt-org
+git clone git@github.com:Comcast/fenrir.git
+cd fenrir
 make build
 ```
 
@@ -86,7 +86,7 @@ WIP. TODO: add info
 
 ## Deploy
 
-For deploying on Docker or in Kubernetes, refer to the [deploy README](https://github.com/Comcast/codex/tree/master/deploy/README.md).
+For deploying on Docker or in Kubernetes, refer to the [deploy README](https://github.com/xmidt-org/codex-deploy/tree/master/deploy/README.md).
 
 For running locally, ensure you have the binary [built](#Source).  If it's in 
 your `GOPATH`, run:
