@@ -21,25 +21,20 @@ import (
 	"fmt"
 	_ "net/http/pprof"
 
-	"github.com/Comcast/codex/db/retry"
-
-	"github.com/Comcast/codex/db/postgresql"
-
-	"github.com/Comcast/codex/db/batchDeleter"
-
-	"github.com/Comcast/webpa-common/concurrent"
-
-	"github.com/Comcast/webpa-common/logging"
 	"github.com/goph/emperror"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"github.com/xmidt-org/codex-db/batchDeleter"
+	"github.com/xmidt-org/codex-db/postgresql"
+	"github.com/xmidt-org/codex-db/retry"
+	"github.com/xmidt-org/webpa-common/concurrent"
+	"github.com/xmidt-org/webpa-common/logging"
+	"github.com/xmidt-org/webpa-common/server"
 
-	//	"github.com/Comcast/webpa-common/secure/handler"
+	//	"github.com/xmidt-org/webpa-common/secure/handler"
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/Comcast/webpa-common/server"
 )
 
 const (

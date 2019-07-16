@@ -88,4 +88,4 @@ it:
 
 .PHONY: clean
 clean:
-	rm -rf ./codex-fenrir ./OPATH ./coverage.txt ./vendor
+	rm -rf ./fenrir ./OPATH ./coverage.txt ./vendor

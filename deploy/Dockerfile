@@ -1,7 +1,7 @@
 FROM golang:alpine as builder
 MAINTAINER Jack Murdock <jack_murdock@comcast.com>
 
-WORKDIR /go/src/github.com/comcast/codex-fenrir
+WORKDIR /go/src/github.com/xmidt-org/fenrir
 
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
@@ -18,6 +18,6 @@ VOLUME /etc/fenrir
 
 EXPOSE 8080
 
-COPY --from=builder /go/src/github.com/comcast/codex-fenrir/fenrir_linux_amd64 /
+COPY --from=builder /go/src/github.com/xmidt-org/fenrir/fenrir_linux_amd64 /
 COPY fenrir.yaml /
 ENTRYPOINT ["/fenrir_linux_amd64"]
