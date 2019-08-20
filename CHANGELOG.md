@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.5.4]
+
+
+
+
 ## [v0.5.3]
 
 
@@ -68,7 +73,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [v0.1.0]
 - Inital Release
 
-[Unreleased]: https://github.com/xmidt-org/fenrir/compare/v0.5.3...HEAD
+[Unreleased]: https://github.com/xmidt-org/fenrir/compare/v0.5.4...HEAD
+[v0.5.4]: https://github.com/xmidt-org/fenrir/compare/v0.5.3...v0.5.4
 [v0.5.3]: https://github.com/xmidt-org/fenrir/compare/v0.5.2...v0.5.3
 [v0.5.2]: https://github.com/xmidt-org/fenrir/compare/v0.5.1...v0.5.2
 [v0.5.1]: https://github.com/xmidt-org/fenrir/compare/v0.5.0...v0.5.1
