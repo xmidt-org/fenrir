@@ -1,4 +1,5 @@
-# fenrir (pronounced “fen-rear”)
+# fenrir
+(pronounced “fen-rear”)
 
 [![Build Status](https://travis-ci.com/xmidt-org/fenrir.svg?branch=master)](https://travis-ci.com/xmidt-org/fenrir)
 [![codecov.io](http://codecov.io/github/xmidt-org/fenrir/coverage.svg?branch=master)](http://codecov.io/github/xmidt-org/fenrir?branch=master)
