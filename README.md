@@ -16,6 +16,19 @@ The service that prunes expired entries from the database.
 Fenrir prunes expired events from the database. For more information on how 
 Fenrir fits into codex, check out [the codex README](https://github.com/xmidt-org/codex-deploy).
 
+## Table of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Details](#details)
+- [Build](#build)
+- [Deploy](#deploy)
+- [Contributing](#contributing)
+
+## Code of Conduct
+
+This project and everyone participating in it are governed by the [XMiDT Code Of Conduct](https://xmidt.io/code_of_conduct/). 
+By participating, you agree to this Code.
+
 ## Details
 
 Fenrir makes a call to the database at a configurable interval.  The database 
