@@ -16,6 +16,8 @@ The service that prunes expired entries from the database.
 Fenrir prunes expired events from the database. For more information on how 
 Fenrir fits into codex, check out [the codex README](https://github.com/xmidt-org/codex-deploy).
 
+This project isn't currently being worked on, as yugabyte doesn't need this service.
+
 ## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
