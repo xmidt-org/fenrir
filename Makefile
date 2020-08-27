@@ -72,11 +72,12 @@ style:
 
 .PHONY: test
 test: go-mod-vendor
-	GO111MODULE=on go test -v -race  -coverprofile=cover.out ./...
+	GO111MODULE=on go test -v -race  -coverprofile=coverage.txt ./...
+	GO111MODULE=on go test -v -race  -json ./... > report.json
 
 .PHONY: test-cover
 test-cover: test
-	go tool cover -html=cover.out
+	go tool cover -html=coverage.txt
 
 .PHONY: codecov
 codecov: test
@@ -88,4 +89,4 @@ it:
 
 .PHONY: clean
 clean:
-	rm -rf ./fenrir ./OPATH ./coverage.txt ./vendor
+	rm -rf ./fenrir ./OPATH ./coverage.txt ./vendor report.json

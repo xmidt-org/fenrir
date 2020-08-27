@@ -19,8 +19,18 @@ branches:
   only:
     - main
 
+addons:
+  sonarcloud:
+    organization: "xmidt-org"
+    token:
+      secure: "xx"
+
+
 script:
   - make style codecov
+
+after_success:
+  - sonar-scanner -Dproject.settings=./.sonar-project.properties
 
 jobs:
   include:
