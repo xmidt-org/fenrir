@@ -8,6 +8,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/xmidt-org/fenrir)](https://goreportcard.com/report/github.com/xmidt-org/fenrir)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/xmidt-org/fenrir/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/xmidt-org/fenrir.svg)](CHANGELOG.md)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xmidt-org_fenrir&metric=alert_status)](https://sonarcloud.io/dashboard?id=xmidt-org_fenrir)
 
 The service that prunes expired entries from the database.
 

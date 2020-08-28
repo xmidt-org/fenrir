@@ -19,8 +19,18 @@ branches:
   only:
     - main
 
+addons:
+  sonarcloud:
+    organization: "xmidt-org"
+    token:
+      secure: "GgS5kC9A177co9dGGFTSOdTzuMyFj+YBhETUk+LdGmealak3aoRxv0OZFpQa8/eOAx0NcKPt5JDKR/dj7OAskKZgt9nbjUuQTN1igX2j3GkLMYJwPIR6s7Wxwdv4bVwW83z+jSKjP8oSsZs1bDCWD+Rz91c2197k3xG/sRLJIIyYga3Cmm5ZFhGdvI9s5xY+/xNBmzrM45CxfbmuMs8/cTBAwWmdyeLVs195sgojeIosems5YByZMnFbFyYFO0MSRQCmFT/TG5lPPa3kiWkkivHkHn0l17QTgBvo1+ggaDMQIophnWrbMPqNvHPeJzROmK0R24TFJLEry2JydqFU2tdHhgL25/3UY3ZtQg83ztamPkluEQq6XmW1YmkNfHnO80xzat6iZVnHdlm4ej1aUNxj9F67q5eO7kO1K/S5w9pxfUUgAb0/42rP+QCjawwqpeIZhy3FtMKi8O/hkwab752StumvS/HDnLf0bfY+7EuuRYfxvuWZGCYuskKgN/xH8vJiAaCQ06a3Qy5Myycfws/AVUwtjHvzTKhfl8+sswQEz3va40PJCz6Uv5qGBZ3LXBTJ3tI+QTAfKPZoB2J0mWZkStEmpBiP0Kg7wCH22zemKRRlaJk3HIjQxrO5XidUmxbAoGOjHc8AqVp21pKLaAstijsaXJHYV0Nlky4Q7ns="
+
+
 script:
   - make style codecov
+
+after_success:
+  - sonar-scanner -Dproject.settings=./.sonar-project.properties
 
 jobs:
   include:
