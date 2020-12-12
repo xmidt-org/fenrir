@@ -1,10 +1,8 @@
 # fenrir
 (pronounced “fen-rear”)
 
-[![Build Status](https://travis-ci.com/xmidt-org/fenrir.svg?branch=main)](https://travis-ci.com/xmidt-org/fenrir)
+[![Build Status](https://github.com/xmidt-org/fenrir/workflows/CI/badge.svg)](https://github.com/xmidt-org/fenrir/actions)
 [![codecov.io](http://codecov.io/github/xmidt-org/fenrir/coverage.svg?branch=main)](http://codecov.io/github/xmidt-org/fenrir?branch=main)
-[![Code Climate](https://codeclimate.com/github/xmidt-org/fenrir/badges/gpa.svg)](https://codeclimate.com/github/xmidt-org/fenrir)
-[![Issue Count](https://codeclimate.com/github/xmidt-org/fenrir/badges/issue_count.svg)](https://codeclimate.com/github/xmidt-org/fenrir)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xmidt-org/fenrir)](https://goreportcard.com/report/github.com/xmidt-org/fenrir)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/xmidt-org/fenrir/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/xmidt-org/fenrir.svg)](CHANGELOG.md)
