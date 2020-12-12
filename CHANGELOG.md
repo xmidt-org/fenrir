@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Migrate to github actions, normalize analysis tools, Dockerfiles and Makefiles. [#35](https://github.com/xmidt-org/fenrir/pull/35)
 - Updated references to the main branch [#32](https://github.com/xmidt-org/fenrir/pull/32)
 
 ## [v0.5.5]
