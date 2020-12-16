@@ -1,6 +1,14 @@
 # fenrir
 (pronounced “fen-rear”)
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+## Archived
+
+This project has been archived.  No future work will be done here.
+
+-------------
+
 [![Build Status](https://github.com/xmidt-org/fenrir/workflows/CI/badge.svg)](https://github.com/xmidt-org/fenrir/actions)
 [![codecov.io](http://codecov.io/github/xmidt-org/fenrir/coverage.svg?branch=main)](http://codecov.io/github/xmidt-org/fenrir?branch=main)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xmidt-org/fenrir)](https://goreportcard.com/report/github.com/xmidt-org/fenrir)
